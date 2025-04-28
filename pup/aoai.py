@@ -37,6 +37,7 @@ def aoai_complete(message: str = "Hello!", functions: list[dict] = None) -> Chat
             },
         ],
         functions=functions or NOT_GIVEN,
+        function_call="auto" if functions else NOT_GIVEN,
         max_tokens=1024,
         temperature=0.7,
         top_p=0.95,
