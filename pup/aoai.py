@@ -8,8 +8,8 @@ from openai._types import NOT_GIVEN
 from pup import config
 
 
-def aoai_complete(
-    message: str = "Hello!",
+def complete_chat(
+    message: str = None,
     messages: list[dict] = None,
     functions: list[dict] = None,
     temperature=None,
@@ -27,6 +27,9 @@ def aoai_complete(
             ]
         }
     ] if message is not None else []
+
+    if not messages:
+        raise ValueError("Messages are required.")
 
     return AzureOpenAI(
         azure_endpoint=config.AZURE_OPENAI_ENDPOINT,
@@ -47,9 +50,10 @@ def aoai_complete(
     )
 
 
-def aoai_function(
+def comp_function(
     name: str,
     description: str,
+    *,
     params: Iterable[tuple] = None,
     required_params=None,
 ) -> dict:
@@ -72,12 +76,12 @@ def aoai_function(
 
 
 if __name__ == "__main__":
-    response: ChatCompletion = aoai_complete("Tell me a joke")
+    response: ChatCompletion = complete_chat("Tell me a joke")
     print(response.choices[0].message.content)
 
-    response2: ChatCompletion = aoai_complete(
+    response2: ChatCompletion = complete_chat(
         "What is two plus two?", functions=[
-            aoai_function(
+            comp_function(
                 "sum", "Sum of two numbers",
                 params=[
                     ("operand1", "number", "The first operand of the sum"),
