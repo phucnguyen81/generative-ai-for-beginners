@@ -1,18 +1,18 @@
 """Project shared settings"""
 import os
-from pathlib import Path
+import pathlib
 
-from dotenv import load_dotenv
+import utils
 
-load_dotenv()
+utils.load_dotenv()
 
-## General
+# General
 REQUEST_TIMEOUT = int(os.environ["REQUEST_TIMEOUT"])
 
-## OpenAI
+# OpenAI
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 
-## Azure OpenAI
+# Azure OpenAI
 AZURE_OPENAI_API_VERSION = os.environ["AZURE_OPENAI_API_VERSION"]
 AZURE_OPENAI_API_KEY = os.environ["AZURE_OPENAI_API_KEY"]
 AZURE_OPENAI_ENDPOINT = os.environ["AZURE_OPENAI_ENDPOINT"]
@@ -22,13 +22,13 @@ AZURE_OPENAI_EMBEDDINGS_API_VERSION = os.environ["AZURE_OPENAI_EMBEDDINGS_API_VE
 AZURE_OPENAI_IMAGE_API_VERSION = os.environ["AZURE_OPENAI_IMAGE_API_VERSION"]
 AZURE_OPENAI_IMAGE_DEPLOYMENT = os.environ["AZURE_OPENAI_IMAGE_DEPLOYMENT"]
 
-## Hugging Face
+# Hugging Face
 HUGGING_FACE_API_KEY = os.environ["HUGGING_FACE_API_KEY"]
 
-## Base Directory
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Base Directory
+BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
-## Chapter Directories
+# Chapter Directories
 CHAPTER_00_DIR = BASE_DIR / "00-course-setup"
 assert CHAPTER_00_DIR.exists(), f"Directory not found: {CHAPTER_00_DIR}"
 CHAPTER_01_DIR = BASE_DIR / "01-introduction-to-genai"
