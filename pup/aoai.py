@@ -8,38 +8,37 @@ from openai._types import NOT_GIVEN
 from pup import config
 
 
-def aoai_complete(message: str = "Hello!", functions: list[dict] = None) -> ChatCompletion:
+def aoai_complete(
+    message: str = "Hello!",
+    messages: list[dict] = None,
+    functions: list[dict] = None,
+    temperature=None,
+) -> ChatCompletion:
     """Return the chat completion result for a single user message"""
+
+    messages = messages + [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": message,
+                }
+            ]
+        }
+    ] if message is not None else []
+
     return AzureOpenAI(
         azure_endpoint=config.AZURE_OPENAI_ENDPOINT,
         api_key=config.AZURE_OPENAI_API_KEY,
         api_version=config.AZURE_OPENAI_API_VERSION,
     ).chat.completions.create(
         model=config.AZURE_OPENAI_DEPLOYMENT,
-        messages=[
-            {
-                "role": "system",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "You are a helpful AI assistant.",
-                    }
-                ]
-            },
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": message,
-                    }
-                ]
-            },
-        ],
+        messages=messages,
         functions=functions or NOT_GIVEN,
         function_call="auto" if functions else NOT_GIVEN,
         max_tokens=1024,
-        temperature=0.7,
+        temperature=NOT_GIVEN if temperature is None else temperature,
         top_p=0.95,
         frequency_penalty=0,
         presence_penalty=0,
