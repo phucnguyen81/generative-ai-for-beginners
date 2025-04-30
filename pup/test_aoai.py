@@ -1,12 +1,14 @@
 
 import os
 import base64
+import openai
 from openai import AzureOpenAI
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
+# os.environ["OPENAI_API_TYPE"] = "azure"
 endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
 deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT")
 subscription_key = os.getenv("AZURE_OPENAI_API_KEY")
@@ -33,12 +35,20 @@ chat_prompt = [
                 "text": "You are an AI assistant that helps people find information."
             }
         ]
+    },
+    {
+        "role": "user",
+        "content": [
+            {
+                "type": "text",
+                "text": "Hello!"
+            }
+        ]
     }
 ]
 
 # Include speech result if speech is enabled
 messages = chat_prompt
-
 # Generate the completion
 completion = client.chat.completions.create(
     model=deployment,
@@ -53,3 +63,9 @@ completion = client.chat.completions.create(
 )
 
 print(completion.to_json())
+
+embeddings = client.embeddings.create(
+    input = 'hello', model=os.getenv("AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT")
+)
+
+print(embeddings)
