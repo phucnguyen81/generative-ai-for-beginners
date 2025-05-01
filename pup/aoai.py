@@ -3,6 +3,7 @@ from typing import Iterable
 
 from openai import AzureOpenAI
 from openai.types.chat import ChatCompletion
+from openai.types import CreateEmbeddingResponse
 from openai._types import NOT_GIVEN
 
 from pup import config
@@ -47,6 +48,19 @@ def complete_chat(
         presence_penalty=0,
         stop=None,
         stream=False
+    )
+
+
+def create_embeddings(inputs) -> CreateEmbeddingResponse:
+    """Creatge embeddings from an input or multiple inputs"""
+    return AzureOpenAI(
+        api_key=config.AZURE_OPENAI_API_KEY,
+        api_version=config.AZURE_OPENAI_EMBEDDINGS_API_VERSION,
+        azure_deployment=config.AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT,
+        azure_endpoint=config.AZURE_OPENAI_ENDPOINT,
+    ).embeddings.create(
+        input=inputs,
+        model=config.AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT,
     )
 
 
