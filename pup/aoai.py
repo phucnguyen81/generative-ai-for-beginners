@@ -17,7 +17,7 @@ def complete_chat(
 ) -> ChatCompletion:
     """Return the chat completion result for a single user message"""
 
-    messages = messages + [
+    messages.extend([
         {
             "role": "user",
             "content": [
@@ -27,7 +27,7 @@ def complete_chat(
                 }
             ]
         }
-    ] if message is not None else []
+    ] if message is not None else [])
 
     if not messages:
         raise ValueError("Messages are required.")

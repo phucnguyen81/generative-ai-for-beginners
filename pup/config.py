@@ -1,10 +1,17 @@
-"""Project shared settings"""
+"""Project shared settings.
+
+NOTE: This module is meant to be standalone. It should not depend on other
+modules in the project since it might cause circular dependency.
+"""
 import os
 import pathlib
 
-import utils
+import dotenv
 
-utils.load_dotenv()
+# Base Directory
+BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
+
+dotenv.load_dotenv(BASE_DIR / ".env")
 
 # General
 REQUEST_TIMEOUT = int(os.environ["REQUEST_TIMEOUT"])
@@ -24,9 +31,6 @@ AZURE_OPENAI_IMAGE_DEPLOYMENT = os.environ["AZURE_OPENAI_IMAGE_DEPLOYMENT"]
 
 # Hugging Face
 HUGGING_FACE_API_KEY = os.environ["HUGGING_FACE_API_KEY"]
-
-# Base Directory
-BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
 # Chapter Directories
 CHAPTER_00_DIR = BASE_DIR / "00-course-setup"
